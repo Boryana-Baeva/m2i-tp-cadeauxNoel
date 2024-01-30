@@ -19,7 +19,6 @@ public class CadeauController {
     @Autowired
     private ListeCadeauxService listeCadeauxService;
 
-
     @GetMapping("cadeaux")
     public List<CadeauDTO> getAll() {
         return cadeauService.findAll()
@@ -40,7 +39,7 @@ public class CadeauController {
         }
     }
 
-        @PostMapping("cadeaux")
+    @PostMapping("cadeaux")
     public ResponseEntity<?> save(@RequestBody CadeauDTO dto) {
         if(dto.getNom() == null || dto.getNom().isBlank()) {
             return ResponseEntity.badRequest().body("Le nom du cadeau est obligatoire !");
