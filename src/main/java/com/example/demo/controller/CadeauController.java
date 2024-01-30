@@ -1,13 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Cadeau;
+import com.example.demo.model.ListeCadeaux;
 import com.example.demo.service.CadeauService;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.example.demo.service.ListeCadeauxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +16,12 @@ import java.util.Optional;
 public class CadeauController {
     @Autowired
     private CadeauService cadeauService;
+    @Autowired
+    private ListeCadeauxService listeCadeauxService;
 
 
     @GetMapping("cadeaux")
     public List<CadeauDTO> getAll() {
-        //List<CadeauDTO> dtos = new ArrayList<>();
         return cadeauService.findAll()
                             .stream().map(CadeauMapper::convertToDTO)
                             .toList();
@@ -39,15 +40,22 @@ public class CadeauController {
         }
     }
 
-    @PostMapping("cadeaux")
-    public ResponseEntity<?> save(@RequestBody Cadeau cadeau) {
-        if(cadeau.getNom() == null || cadeau.getNom().isBlank()) {
+        @PostMapping("cadeaux")
+    public ResponseEntity<?> save(@RequestBody CadeauDTO dto) {
+        if(dto.getNom() == null || dto.getNom().isBlank()) {
             return ResponseEntity.badRequest().body("Le nom du cadeau est obligatoire !");
         }
-        else if(cadeau.getPrix() == null || cadeau.getPrix() <= 0) {
+        else if(dto.getPrix() == null || dto.getPrix().isBlank()) {
             return ResponseEntity.badRequest().body("Le prix du cadeau est obligatoire et sa valeur doit être positive !");
         }
         else {
+            Cadeau cadeau = CadeauMapper.convertToEntity(dto);
+
+            if(dto.getListe() != null && !dto.getListe().isBlank()) {
+                ListeCadeaux listeCadeaux = listeCadeauxService.findByNom(dto.getListe());
+                cadeau.setListeCadeaux(listeCadeaux);
+            }
+
             cadeauService.save(cadeau);
             return ResponseEntity.ok(cadeau);
         }

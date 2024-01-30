@@ -16,11 +16,11 @@ public class CadeauDTO {
         this.prix = prix;
     }
 
-    public CadeauDTO(String nom, String description, String prix, String listCadeauxNom) {
+    public CadeauDTO(String nom, String description, String prix, String liste) {
         this.nom = nom;
         this.description = description;
         this.prix = prix;
-        this.liste = listCadeauxNom;
+        this.liste = liste;
     }
 
     public String getNom() {

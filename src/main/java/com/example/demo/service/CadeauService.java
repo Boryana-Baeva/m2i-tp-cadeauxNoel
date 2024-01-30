@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Cadeau;
+import com.example.demo.model.ListeCadeaux;
 import com.example.demo.repository.CadeauRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
