@@ -3,7 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "cadeau")
+@Table(name = "cadeaux")
 public class Cadeau {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +11,10 @@ public class Cadeau {
     private String nom;
     private String description;
     private Double prix;
+
+    @ManyToOne
+    @JoinColumn(name = "liste_cadeaux_id")
+    private ListeCadeaux listeCadeaux;
 
     public Cadeau() {
     }
@@ -51,6 +55,14 @@ public class Cadeau {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public ListeCadeaux getListeCadeaux() {
+        return listeCadeaux;
+    }
+
+    public void setListeCadeaux(ListeCadeaux listeCadeaux) {
+        this.listeCadeaux = listeCadeaux;
     }
 
     @Override
