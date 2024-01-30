@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,11 @@ public class CadeauController {
 
 
     @GetMapping("cadeaux")
-    public List<Cadeau> getAll() {
-        return cadeauService.findAll();
+    public List<CadeauDTO> getAll() {
+        //List<CadeauDTO> dtos = new ArrayList<>();
+        return cadeauService.findAll()
+                            .stream().map(CadeauMapper::convertToDTO)
+                            .toList();
     }
 
     @GetMapping("cadeaux/{id}")
@@ -27,7 +31,8 @@ public class CadeauController {
         Optional<Cadeau> optionalCadeau = cadeauService.findById(id);
 
         if(optionalCadeau.isPresent()) {
-            return ResponseEntity.ok(optionalCadeau.get());
+            CadeauDTO dto = CadeauMapper.convertToDTO(optionalCadeau.get());
+            return ResponseEntity.ok(dto);
         }
         else {
             return ResponseEntity.notFound().build();
