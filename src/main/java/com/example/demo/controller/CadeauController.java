@@ -57,7 +57,10 @@ public class CadeauController {
             }
 
             cadeauService.save(cadeau);
-            return ResponseEntity.ok(cadeau);
+
+            CadeauDTO responseDTO = CadeauMapper.convertToDTO(cadeau);
+
+            return ResponseEntity.ok(responseDTO);
         }
     }
 
